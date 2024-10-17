@@ -1,1 +1,5 @@
                                     part 1:
+NPM != Node Package Manager
+Majority of the people don't know about this 
+Its indeed that NPM manages Packages but its not Node Package Manager
+
