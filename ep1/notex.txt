@@ -1,0 +1,134 @@
+                            Part - 0:
+# Hello world likhna btaya (HTML, JS)---
+
+// Hello world in JS
+const heading = document.createElement("h1"); 
+// that's how we create an element in JS...
+
+heading.innerHTML = "Hello World by JS!"; 
+// now putting our msg inside the heading
+
+// now we need to put the heading inside the root id
+const root = document.getElementById("root"); 
+// first we created root 
+
+root.appendChild(heading);  
+// that's how we put with the help appendChild method...
+
+# Intro to react---
+CDN se 2 link paste krke apn react ko implement kr skte
+jisme se pehli link "Core React" ki hoti h, or dusri "React DOM" ki
+
+ab in dono links m "crossorigin" krke ek keyword tha,
+crossorigin = Cross-Origin Resource Sharing(CORS) is a security feature that allows web browsers to make requests to a different domain than the one serving the web page. 
+
+                            Part - 1:
+***NOW WE GOT THE SUPERPOWERS OF REACT***
+<!-- Hello world in React -->
+    <script>
+        const heading2 = React.createElement("h1", {}, "Hello World from React!");
+        const root2 = ReactDOM.createRoot(document.getElementById("root2"));
+        root2.render(heading2);
+    </script>
+
+                            Part - 2:
+Question -> Why was React came in the market ?
+Ans -> For optimising the DOM manipulation, DOM manipulation is very costlier thing in the market and that time everyone was trying to optimise it and in this way React made...
+
+const heading2 = React.createElement("h1", {}, "Hello World from React!");
+in this line of code "{}" this was the empty object in which we can give attributes to the tags like,
+
+const heading2 = React.createElement("h1", {id: "heading"}, "Hello World from React!");
+we gave id attribute to our h1 tag...
+
+const heading2 = React.createElement("h1", {}, "Hello World from React!");
+also in this line ` ("h1", {}, "Hello World from React!") ` 
+that's not only an HTML tag instead, this is an React object which goes into the "heading2" and when we typed ` root2.render(heading2); ` our browser converted that object into the h1 tag and showed us the message
+
+console.log(heading2);  //object is displaying on the console of browser, which proves that ` ("h1", {id: "heading2"}, "Hello World from React!") ` was an object...
+
+                            Part - 3:
+Akshay told to write and practice the code and everything from starting to till now...
+
+                            Part - 4:
+now this was all about only 1 div 
+What about nested div tags like,
+    <div id="parent">
+        <div id="child">
+            <h1></h1>
+        </div>
+    </div>
+
+=> sari process vahi rhegi bs React object k andr kuch esa hoga,
+const parent = React.createElement("div", {id: "attribute"}, *Changes*);
+
+const parent = React.createElement(
+    "div", {id: "parent"},
+    React.createElement(
+        "div", {id: "child"}, 
+        React.createElement(
+            "h1", {}, "Congrats, You've learnt creation of nested elements in React" 
+        )
+    )
+);
+
+Now what about siblings,
+    <div id="parent">
+        <div id="child">
+            <h1>Sibling 1</h1>
+            <h2>Sibling 2</h2>
+        </div>
+    </div>
+
+=> siblings k liye array bna do simply
+const parent = React.createElement("div", {id: "attribute"}, [*sibling1*, *sibling2*]);
+
+Now what about this,
+    <!-- <div id="parent">
+        <div id="child1">
+            <h1>Sibling 1</h1>
+            <h2>Sibling 2</h2>
+        </div>
+        <div id="child2">
+            <h1>Sibling 1</h1>
+            <h2>Sibling 2</h2>
+        </div>
+    </div> -->
+=> bnao lpak lpak k arrays...
+
+But what if the code gets complex and complex 
+=> JSX is the way to write sweet, simple and hassle free code, most people nowadays thinks that react is only written in JSX, that's popular JSX is. But what we studied is the core part of React.
+we'll learn JSX in ep-2...
+
+                            ***NOTE***
+    ReactElement(object) => HTML(Browser understands)
+    ReactElement is an object and this object becomes an HTML by ".render()" which the Browser understands...
+
+    so React.createElement != creating an HTML element
+    instead React.createElement == creating an object
+
+                            Part - 5:
+Order of files matters in HTML
+like: <script src = "app.js"></script> 
+if we declare this before the place where we have putted our CDN react link then the code will not work and the error will be "React is not defined"
+
+Question -> what if there is something in those <div> elements already, so what will happend with that html code when we render our react code ?
+a-> will the react code render below that html code 
+b-> will that html code set below the react code
+c-> will the html code be replaced with React code
+d-> will the React code be replaced with html code
+ANS => Opt (c) is correct
+
+***React is a Library not a Framework***
+Library = It is something which can be implemented over a small portion of code 
+Framework = It comes with a complete package and bundle/app which can be implemented
+-> And as we saw that we implemented our React in the little piece of code of HTML that <div> tag, that means that React is a Library and the end of the day React is just a JavaScript which is making our complex task easier
+
+                            RECAP OF THIS EPISODE
+1-> We learnt how to write Hello World in HTML
+2-> We learnt how to inject React into our code (CDN Link)
+3-> We learnt how to write Hello World in React
+4-> We studied about React element (An Object)
+5-> We learnt how to create nested and complex element in react (Array of siblings)
+6-> We learnt that HTML inside the element on which React is implemented, is replaced by React code by .render method 
+7-> We saw the difference between Library and Framework (React is a Library)
