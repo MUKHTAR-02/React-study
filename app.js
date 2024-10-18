@@ -1,3 +1,6 @@
+import React from "react";
+import ReactDOM from "react-dom/client";
+
 const heading2 = React.createElement("h1", {id: "heading2"}, "Hello World from React!");
 
 console.log(heading2);  //object is displaying on the console of browser, which proves that ` heading2 ` was an object...

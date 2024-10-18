@@ -3,3 +3,91 @@ NPM != Node Package Manager
 Majority of the people don't know about this 
 Its indeed that NPM manages Packages but its not Node Package Manager
 
+Now initialising NPM in our project...
+-> npm init
+After this a new file "package.json" will be created, it is nothing but a configuration for npm.
+Packages are also knows as Dependencies...
+
+Now we need a bundler to make our app production ready 
+-> Before sending the app to production its required to bundle the app which bundles, compresses, cleans and makes the app production ready, here we will use "parcel" bcoz its easy and powerful
+->There are mainly three types of bundler out there:
+1. Webpack
+2. Parcel
+3. Vite
+
+=> npm install -D parcel
+Que -> what's "-D" here ?
+Ans -> There are 2 types of Dependencies:
+    1. Normal Dependencies (for production purposes)
+    2. Dev Dependencies (for Developers)
+So this was Developer Dependency
+
+"devDependencies": {
+    "parcel": "^2.12.0"
+  }
+Que -> What is the meaning of "^" this sign caret and what's the difference between caret (^) and tilde (~) sign in Dependencies
+Ans -> Suppose after few days a new small update come like 2.12.1 then the caret sign will automatically gets updated to that update, but in case of tilde when a new version comes like 2.13.0 it automatically gets updated to that whole new version which could be risky for Development/production. 
+So chize fat jati jb new version ata to so its better to use always caret sign for the Dependencies...
+
+After installing parcel Two more file will be created "package-lock.json" and node_modules.
+In package-lock.json file the exact information of that version (2.12.0) at the time when we installed it, is stored in it, IT will kinda lock that all info...
+
+Que -> Difference between package.json and package-lock.json ?
+Ans -> package.json => keeps info of approx version
+       package-lock.json => keeps info of exact same version
+
+Node_modules => It is like a database in where every packages, which we install from npm is stored. in simple terms it is the "collection of Dependencies".
+
+Que -> why node_modules is so heavy ?
+Ans -> Here in our case we installed parcel as it was our Dependency, but parcel to have its own Dependencies and those Dependencies have their own bundles of Dependencies, this is known as Transitive Dependencies, that's why its like that....
+
+Que -> is there only be one package.json file ?
+Ans -> No, every Dependency has its own package.json file (you can check it out from visiting Dependencies present in node_modules folder)
+
+Node_modules is so heavy that it should be avoided to put on github or on production that's is why we created a new file ".gitignore" in this git will ignore all the things which is mentioned in it
+command => echo "node_modules/" >> .gitignore
+
+Que -> But Node_modules is the collection of Dependencies so why we are ignoring it, doesn't there be any problem ?
+Ans -> If we have package.json and package-lock.json then we can recreate our node_modules, even if you delete it! You just need to type "npm install" and node_modules will be generated.
+
+                                    part 2:
+                        NOW ITS TIME TO EXECUTE OUR APP!
+
+=> npx parcel index.html  (Now our app will be hosted on localhost by parcel)
+Que -> what's npx here ?
+Ans -> just like npm manages or installs the packages, npx command is used to execute the packages. Here we executed parcel package.
+
+***NOTE***: We can also inject React and ReactDOM into our project with the help of npm and this is the correct way to do it, Using CDN link is not a good practice (its time taking).
+=> npm install react OR npm i react (shortform)
+=> npm i react-dom 
+
+Now we need to import the react in the app.js file otherwise it will give an error (react is not defined)
+=> import React from "react";
+this small letter wali react vo h jise apn node_modules m se call kr rhe
+
+after this we will get an error in this line of html
+<script src = "app.js"></script> 
+in app.js our import react line is written but our browser is considering it as a normal js file and in js file there is not such thing like import react, that's why the error is occuring. 
+=> <script type="module" src = "app.js"></script>
+by defining type module the error will be solved
+
+One more warning is also present on the console becoz of this line
+import ReactDOM from "react-dom";
+Warning: You are importing createRoot from "react-dom" which is not supported. You should instead import it from "react-dom/client".
+=> import ReactDOM from "react-dom/client";
+earlier ReactDOM was come from react-dom but now its in the client
+
+***TEMP FILES***
+dist folder -> it is a folder which is automatically generated, and created by parcel, then from here the data is displayed on the browser.
+
+.parcel-cache -> it is a cache folder which also automatically generated in which some temp data is stored which helps parcel to remember things and makes the parcel working faster.
+
+so both this files will go into gitignore.
+
+Que -> How to make our app suitable for older versions of browsers manually (by not using parcel)
+Ans -> With the help of browserslist, write something like thing in the package.json file
+"browserslist": [
+    "last 10 Chrome version",
+    "last 10 Firefox version", 
+    "last 2 versions" <- this will give support of last 2 versions of all browsers.
+  ]
