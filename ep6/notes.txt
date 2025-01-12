@@ -1,0 +1,82 @@
+                                    part 1: Exploring the World
+Two types of service architectures which followed by industry
+1- Monolith Arch: (Old Technique) Everything is present inside one service.
+2- Microservices Arch: (New Technique) For every work, there is a different services, independent of other services. 
+
+Que => How Microservices interact with each other ?
+Ans => With API calls.
+
+                                    part 2: how to populate the data using API
+Que => How web apps or ui application fetch the data from backend ?
+Ans => Two approaches:
+       1- Page Loads -> API call -> Render the data to page
+       2- Page Loads -> Render data whatever is present -> API call -> Re-render the fetched data 
+    - we will use 2nd approach and for this we need "useEffect hook".
+
+                                    part 3: useEffect hook
+- useEffect() is used to manage side-effects like API calls, subscriptions, timers, mutations, and more.
+- It takes two arguments,
+=>      useEffect(()=>{}, []);
+        1- Callback function (here we do the fetching stuff)
+        2- Array of dependencies.
+
+=> iske andr Akshay saini ne swiggy ki api ko use kiya with the hook "useEffect" or jo constants.js file m restaurants ka Hardcoded data padha hua tha use remove kr diya,
+
+And this is not a good way of writing like this,
+-> setRestroList(json.data.cards[1].card.card.gridElements.infoWithStyle.restaurants); (not good way)
+-> setRestroList(json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants); (good way, this is known as "Optional chaining")
+
+                                    part 4: Shimmer UI
+=> Quki Apn fetch krne se pehle rendering kr rhe to usse blank screen aa rahi jo user interface ko bekar krti h, iske liye do kam kr skte:
+        1- Loading screen animation likho (not good way, ise apn if condition m dal skte show krte)
+                //  Conditional Rendering
+        ->      if(restroList.length === 0) {   // jb tk data fetch ho rha, ye animation chalega
+                        return <h1>Spinning Loading Amination...</h1>
+                }       
+        2- Shimmer Ui (best way, ye dummy skeleton bna deta apni website ka or use show krva deta to user ko idea lag jata ki is type ki design m kuch show hone wala hai, ise apn khud bhi code kr skte (see Shimmer.js) by making its separate component and giving the exact css just like of our cards)
+
+Que => What is Conditional Rendering ?
+Ans => Rendering data, on the UI based on the condition is known as Conditional Rendering. 
+                                  
+                                    part 5: Working of useState hook
+=> login / logout button bnaya with the help of useState() hook.
+
+Que => How the const variable is getting updated by useState's hook function 'setVariableName(newVariableName)' ?
+Ans => When we call the the setVariableName(), React re-renders that component and again the new const variable with that updated value is created, and hence the state changes on the UI...
+
+Que => When React re-renders the component then that whole component reloads ?
+Ans => NO, bcoz of Reconciliation algo, only the difference made in that component gets changed and reloaded, leaving rest of the things as it is. THAT'S WHY REACT IS FAST...
+
+                                    part 6: Search functionality
+
+=>      <input className="input-text" type="text" placeholder="search-box" value={searchText} onChange={(e) => {
+                setSearchText(e.target.value);
+        }}/>
+        <button className="search-btn" onClick={() => {
+                console.log(searchText);
+        }}>Search
+        </button> 
+-> Here, onChange method is making us able to write on the input are on UI, otherwise we won't be able to write anything on it, since it was the useState Variable which only gets changes when setVariableName() called.
+
+Que => So when we are typing on that search input area, like: 'C' 'A' 'F' 'E', 4 letters so 4 times react was re-rendering that component ?
+Ans => Yes, becoz there is a setVariableName() method was there, which was triggering by onChange method each time when a key is pressed...
+
+=> Now Search button ki bari -
+                    <button className="search-btn" onClick={() => {
+                        const filteredRestro =  RESLIST.filter(
+                            (res) => res.cuisine.toLowerCase().includes(searchText.toLowerCase()));
+                            setRestroList(filteredRestro);
+                    }}>Search
+                    </button>
+        Here,
+        1- toLowerCase(): is used to make words case sensitive
+        2- includes(): is used so that user don't need to write the whole name, 
+                like: Fast food, user could write "fast" to get this result
+        3- RESLIST.filter: we are filtering from the original source and updating the temporary data
+
+Que => How to get rid of CORS plugin, becoz the other person might not have this plugin ?
+Ans => Put these small piece of link in front of API,
+       1- https://corsproxy.io/?
+       2- https://proxy.cors.sh/
+       Now you don't need any CORS plugin.
+       for more info goto this website: ("https://nordicapis.com/10-free-to-use-cors-proxies/")

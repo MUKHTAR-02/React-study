@@ -1,0 +1,73 @@
+                                Part 1: Import and Exports
+# Note: 
+1- Its not a good practice to keep all components in one file. Best practice is to make separate files for separate components. And all those components will be stored in the SRC > component folder.
+
+2- Its not a good practice to keep the hardcoded data(img url, logo url etc) into component folder, It will goes to utils/common/config folder.
+
+# Import / Export: There are two types of Import & Export:
+-> Exports:
+1- Default Export: Writted at the bottom of the file.
+2- Named Export: Written in starting of the things which we need to Export (we can also export the components using named export).
+
+-> Imports: 
+1- Default Import: written at the top of the file.
+2- Named Import: written at the top also but uses {curly braces}
+
+# Difference between Default export and Named export: 
+You can write only one defalut export in the bottom, while Named export can be written multiple times to export multiple things (see file: src > utils > constants.js)
+
+                                Part 2: React Hooks
+Now we will create a button which will filter the restros, whose rating is greater than 4.0 and show them to ui...
+    // restroList -> this was a normal JS variable
+    <button className="filter-restro" onClick={() => {
+        restroList = restroList.filter((res) => res.rating > 4);
+        console.log(restroList);
+    }}> Top Rated Restros </button>
+
+But the thing is data is filter on the console but not updated on the UI.
+
+=> Now React Hooks comes into picture
+
+Que => React Hooks ?
+Ans => Normal JS utility function, introduced in React version 16.8
+
+=> Two majorily used React Hooks:
+1- useState(): Used to maintain the state of the components, it makes Superpowerful State Variables in react, (and we import it as a "Named Import")
+2- useEffect(): To manage side-effects like API calls, subscriptions, timers, mutations, and more.
+
+*Abhi apn useState ki bate krenge...
+
+=> Normal JS variable vs State variable
+    - let restroList = []; ---> this was a normal JS variable
+    - const [restroList, setRestroList] = useState([]); ---> State variable (Superpowerful variable)
+here, setRestroList is used to update the value of our state variable
+
+    <button className="filter-restro" onClick={() => {
+        const filteredRestroList = restroList.filter(
+        (res) => res.rating > 4);
+        // console.log(filteredRestroList);
+        setRestroList(filteredRestroList);  //updated the state variable with filteredRestroList variable value
+    }}> Top Rated Restros </button>
+
+--- Now our UI getting updated WOHOOO 🎉 ---
+
+*NOTE*: Whenever a state variable updates, React re-renders the component 
+(like in our case, when we updated our state variable through "setRestroList(filteredRestroList)", and then React re-rendered the "Body" component and our UI got updated...)
+
+=> Now Some theory Part
+Que => DOM ?
+Ans => The DOM represents a web page as a logical tree, where each branch ends in a "node" that contains "objects".
+
+Que => Virtual DOM ?
+Ans => React stores a copy of Browser DOM which is called Virtual DOM.
+
+Que =>  What is Reconciliation in React?
+Ans => Reconciliation algo came in React 16 to update/change the DOM/UI. 
+        - (after react 16 this algo is known as "React Fiber" or "Diffing Algorithm")
+        - It is the process through which React updates the Browser DOM and makes React work faster. React uses this algorithm so that component updates are predictable and faster. React would first calculate the difference between the real DOM and the copy of DOM (Virtual DOM) when there's an update of components. When we make changes or add data, React creates a new Virtual DOM and compares it with the previous one. Comparison is done by this Algorithm. React compares the Virtual DOM with Real DOM. It finds out the changed nodes and only updates the changed nodes in Real DOM leaving the rest nodes as it is. This process is called Reconciliation / Diffing algorithm / React Fiber.
+        (
+            that's why in the state variable declaration,
+            const [restroList, setRestroList] = useState([]);
+            it took "setRestroList", in order to compare the update with the previous one,
+            and changed the UI...
+        )

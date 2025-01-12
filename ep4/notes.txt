@@ -1,0 +1,100 @@
+                            Part 1: Food Ordering app
+Que => What should our app look like ?
+Ans => It's structure will be like,
+    * Header
+        - Logo
+        - Nav Items
+    * Body
+        - Search
+        - Restaurant Container
+            - Restaurant Card
+    * Footer
+        - Copyright
+        - Link
+        - Address
+        - Contact
+
+`React ka mast kam h, component bnao ek bar or use kro bar bar`
+
+Basic si hard coded website bnai, now there are many RestaurantCards here of same type now we need to make them dynamic, each card should be different according to different Restaurant data we will see this in the next part of this episode.
+
+                            Part 1: Dynamic Cards
+
+Que => What is props ?
+Ans => properties(props) of the components.
+    eg:     <div className="res-container"> 
+                <RestaurantCard resName = "Nafees Restaurant" cuisine = "Biryani, Nafees Special"/>
+                <RestaurantCard resName = "Leez Burger" cuisine = "Burger, Fast Food"/>
+            </div>
+    RestaurantCard is a component
+    (resName, cuisine) are props.
+
+Que => How to write dynamic components ?
+Ans => By writing props (properties)
+
+Que => What is "destructuring on the fly" ?
+Ans => Instead of writing something like, 
+
+const RestaurantCard = (props) => {
+    return (
+        <div className="res-card">
+            <img className="res-logo" alt="res-logo" src="https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/x7zvrb5mbg92skzncwnu"/>
+            
+            <h3>{props.resName}</h3>
+            <h4>{props.cuisine}</h4>
+            <h4>4.4 Stars</h4>
+            <h4>38 minutes</h4>
+        </div>
+    );
+};
+
+WE DESTRUCTRE THE JAVASCRIPT LIKE 
+
+const RestaurantCard = (props) => {
+    const {resName, cuisine} = props;   // destructuring
+    return (
+        <div className="res-card">
+            <img className="res-logo" alt="res-logo" src="https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/x7zvrb5mbg92skzncwnu"/>
+            
+            <h3>{resName}</h3>  // now directly using
+            <h4>{cuisine}</h4>
+            <h4>4.4 Stars</h4>
+            <h4>38 minutes</h4>
+        </div>
+    );
+};
+
+                            // OR
+
+const RestaurantCard = ({resName, cuisine}) => {    // destructuring
+    return (
+        <div className="res-card">
+            <img className="res-logo" alt="res-logo" src="https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/x7zvrb5mbg92skzncwnu"/>
+            
+            <h3>{resName}</h3>  // now directly using
+            <h4>{cuisine}</h4>
+            <h4>4.4 Stars</h4>
+            <h4>38 minutes</h4>
+        </div>
+    );
+};
+
+Que => What is "config driven ui" ?
+Ans => The UI is the UI which is driven by the config, which is sent by backend.
+For different zones the UI should be different which is called as Config driven UI.
+    eg: swiggy has different foods and Restaurants in delhi, indore, mumbai so it will use C.D.UI...
+
+*** Chrome extension "JSON viewer" => for viewing the json data on the browser more buitifully ***
+
+In this lecture he used swiggy data from the browser and copied the Restaurant card data where everything related to Restaurant was present in it including name, cuisine, cloudinary images (in industrial projects, all the images are stored on cloud, which are known as cloudinary images) and then created many cards, 
+He copied 15 Restaurant cards info and then first he hard coded everything ans stored in array of objects then after that he used a loop, "map reduce" (very imp thing, must recommended to use in case of loops) and then a warning was coming of "key" so he gave the key in the loop for each card this key info was also present in the Restaurant card information, again providing key is very imp.
+
+Que => Why providing key is imp ?
+Ans => When we have many sibling containers, then in order to uniquely indentify them, we need to provide key for each or 'em,
+    => And also main reason is that when we add a new sibling (in our case RestaurantCard) then react won't be aware of where to place it, so it will re-render all the data. But if we have given ids then react knows that this ids are already present so just it needs to render new id among them.
+    => Advantages:
+        -> Huge optimization
+        -> Highly recommended
+
+Que => Some people take indexes of loops as a keys, Is it correct ?
+Ans => NO, Even the official documentation of react says "NO", reason behind it is when you will insert element let say at 1st position then you will be required to change all the indexes...

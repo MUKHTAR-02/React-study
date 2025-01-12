@@ -1,0 +1,142 @@
+                                    part 1: NPM shortcut
+when we start our app then we need to write something like:
+=> npx parcel index.html
+we can apply a shortcut given by npm, it's possible by doing some changes in package.json file's script,
+"scripts": {
+    "start": "parcel index.html",       // Here we can name anything as we like, in place of "start"
+    "build": "parcel build index.html",
+    "test": "jest"
+  },
+Now we only need to write, 
+=> npm run start OR npm start
+=> npm run build (for production) 
+TATA NPX COMMAND, HEHE
+
+Que => Can i write "chalu" in place of "start" in package.json file's script section ?
+Ans => yes,
+=> npm run chalu (works fine) 
+=> npm chalu (this will not work, only works with "start")
+
+                                    part 2: Revision
+again rewised all the stuff from ep-01, like:
+-> how to write Hello world in react  
+
+-> and when we write, 
+    const heading2 = React.createElement("h1", {id: "heading2"}, "Hello World from React!");
+this is not an HTML element this is a React object...(which we are storing in heading2)
+
+-> .render() will replace the already written html code with React object which we created (like heading2)
+
+                                    part 3: JSX
+Writing something like is very complex,
+    const heading2 = React.createElement("h1", {}, "Hello World from React!");
+so in order to solve this problem we got JSX (React is different and JSX is different, they are not same thing)
+
+in JSX we write something like this,
+=> const jsxHeading = <h1 id="heading"> Hello world using JSX </h1>;
+NOTE: JSX IS NOT HTML(it is html/xml like syntax), AND ALSO NOT REACT (it is used to simply the react code, made by meta/facebook developers)
+
+Que => Is JSX a part of JS or react if not then why its working on the browser, who is running it ?
+Ans => No, JSX not a part of JS or React, parcel is running the JSX that's why its message (Hello World, using JSX) is visible  
+
+Que => What is the working of JSX, Also discuss about Babel ?
+Ans => JSX code is transpiled and becomes React object and the transpilation is done by parcel's babel (BABEL IS A PACKAGE OF JAVASCRIPT, INSTALLED BY PARCEL, PARCEL MANAGES BABEL)
+-Babel is not created by meta/facebook
+
+Que => Difference between JSX and HTML ?
+Ans => HTML: <h1 class="root"> Hello world using HTML </h1>
+       JSX: <h1 className="root"> Hello world using JSX </h1>
+-> Unlike HTML we cannot give class attribute by writing simply "class" in jsx, we have to write "className" in order to give a class attribute.
+
+-> All attributes in the JSX is written in camelCase format, while in HTML it does not,
+eg: HTML: <h1 class="root" tabindex="1"> Hello world using HTML </h1>
+    JSX: <h1 class="root" tabIndex="1"> Hello world using JSX </h1>
+
+NOTE: If you are writting JSX in single line that will be valid, but if you are writting it in multiple lines then you must use paranthesis,
+->single line: <h1 class="root"> Hello world using JSX </h1>
+
+->multiple lines: ( <h1 class="root">
+                   Hello world using JSX 
+                  </h1> )
+
+                                part 4: React Component
+Everything in React is a Component
+There are two types of Component in React:
+1-> Class based Component: Old way of writing code
+2-> Functional Component: New way of writing code (It is a function that returns the React element)
+
+Writing code in Functional Component-
+const Heading = () => {  
+    return <h1> Hello Functional Component </h1>;
+};   // This was a noraml arrow function of Javascript...
+
+NOTE: First letter should be Capital
+
+Some cool developers likes to code something like this,
+const Heading = () => <h1> Hello Functional Component </h1>; 
+This will give same output...
+
+For multiple lines cool developers do this,
+const Heading = () => (
+    <div id="container"> 
+        <h1 className="heading"> Hello Functional Component </h1>
+    </div>
+); 
+
+In order to render, we write something like this,
+=> root.render(<Heading/>);    // In brackets for Babel
+                --- OR ---
+   root.render(<Heading></Heading>);
+                --- OR ---
+   root.render(Heading());
+
+Que => What is Component composition ?
+Ans => Component inside another Component 
+eg: 
+const Heading = () => (
+    <div id="container">
+        <Jasus/>    // predefined functional component
+        <h1>Hello Functional Component</h1>
+    </div>
+);
+
+                            part 5: Javascript inside JSX
+Que => Is it necessary to use arrow function in functional component ?
+Ans => No, its just a new Industry way to write code we can also use normal Javascript function like this,
+const Heading = function () {
+    return (    //here returning is necessary
+        <div> 
+            <h1> Hello from normal function </h1>
+        </div>
+    )
+};
+
+Que => How to put React element inside Component ?
+Ans =>
+    // Define a Component
+    function MyComponent() {
+    // Create a React element
+    const myElement = <p>This is a React element!</p>;
+
+    // Use the element inside the component
+    return (
+        <div>
+        <h1>Welcome to MyComponent</h1>
+        {myElement} {/* React element inserted here */}
+        </div>
+    );
+    }
+    
+   *Key Points:
+    1- React elements (e.g., <p>, <span>) are just objects, and you can store them in variables.
+    2- Use { } to embed any JavaScript expression, including React elements, inside JSX.
+    3- Components can return a structure combining both HTML-like JSX and React elements.    
+
+Que => what if someone put mallecious data inside the curly braces {} ?
+Ans => JSX will senetize it before executing it 
+eg: const Heading = () => (
+    <div id="container">
+        {mallecious Data}  //it will be senetized by JSX before executing.
+        <h1>Hello Functional Component</h1>
+    </div>
+);
