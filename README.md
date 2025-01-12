@@ -18,3 +18,8 @@
 - Error handling
 - HTTPs hosting support
 - Creates different dev and production bundles
+
+# Things which Babel is doing for us
+- Transpiles the JSX code into React object
+- Converts ES6 js code into that code which the older versions of browsers can understand
+- Compiler of js

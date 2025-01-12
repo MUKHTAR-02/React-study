@@ -1,0 +1,101 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    border: 2px solid black;
+    align-items: center;
+}
+
+.img-container > .logo{
+    padding: 30px;
+    width: 40px;
+    height: 40px;
+}
+
+.nav-items > ul{
+    display: flex;
+}
+
+.nav-items > ul > li{
+    padding: 15px;
+    list-style-type: none;
+}
+
+.login {
+    padding: 10 15px;
+    cursor: pointer;
+}
+
+.filter {
+    display: flex;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.filter-restro {
+    margin: 10px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.res-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.res-card {
+    background-color: lightgrey;
+    width: 200px;
+    height: 300px;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 20px;
+}
+
+.res-card:hover {
+    border: 0.5px solid black;
+    cursor: pointer;
+}
+
+.res-card > img {
+    width: 60%;
+    border-radius: 20px;
+}
+
+.res-logo {
+    width: 200vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+/* Styling for Shimmer UI */
+.shimmer-button {
+    margin: 10px;
+    padding: 20px;
+    width: 100px;
+    background-color: #b8b5b54f;
+}
+
+.shimmer-res-cards {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.shimmer-res-card {
+    width: 200px;
+    height: 300px;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 20px;
+    justify-content: center;
+    align-items: center;
+    background-color: #b8b5b54f;
+}
+
+.shimmer-res-card:hover {
+    border: 0.5px solid black;
+    cursor: pointer;
+}

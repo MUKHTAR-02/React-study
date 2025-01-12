@@ -2,11 +2,12 @@
   "name": "react",
   "version": "1.0.0",
   "description": "Studing React from Akshay Saini",
-  "main": "index.js",
   "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html",
     "test": "jest"
   },
-  "repository": {
+  "repository": { 
     "type": "git",
     "url": "(https://github.com/MUKHTAR-02/React-study.git)"
   },
