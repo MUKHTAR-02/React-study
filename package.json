@@ -7,7 +7,7 @@
     "build": "parcel build index.html",
     "test": "jest"
   },
-  "repository": { 
+  "repository": {
     "type": "git",
     "url": "(https://github.com/MUKHTAR-02/React-study.git)"
   },
@@ -20,7 +20,8 @@
   },
   "dependencies": {
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.11.2"
   },
   "browserslist": [
     "last 10 Chrome version",

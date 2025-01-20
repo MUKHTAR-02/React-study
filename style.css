@@ -46,8 +46,8 @@
 
 .res-card {
     background-color: lightgrey;
-    width: 200px;
-    height: 300px;
+    width: 220px;
+    height: 370px;
     margin: 5px;
     padding: 5px;
     border-radius: 20px;
@@ -98,4 +98,10 @@
 .shimmer-res-card:hover {
     border: 0.5px solid black;
     cursor: pointer;
+}
+
+.users-card {
+    margin: 5px;
+    padding: 10px;
+    border: 1px solid black;
 }

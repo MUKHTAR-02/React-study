@@ -23,3 +23,10 @@
 - Transpiles the JSX code into React object
 - Converts ES6 js code into that code which the older versions of browsers can understand
 - Compiler of js
+
+# 2 types of routing:
+- Server side routing (makes network calls and reloads the page)
+- Client side routing (single page application, no reload)
+
+# React life cycle Diagram:
+- `https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/`
