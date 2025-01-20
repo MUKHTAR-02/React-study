@@ -91,3 +91,16 @@ Ans -> With the help of browserslist, write something like thing in the package.
     "last 10 Firefox version", 
     "last 2 versions" <- this will give support of last 2 versions of all browsers.
   ]
+
+*** Exucuting our code with npx ***
+to run the code 
+=> npx parcel index.html
+
+to build the code (for production)
+=> npx parcel build index.html 
+(but for this we need to update our package.json file's
+  "name": "react",
+  "version": "1.0.0",
+  "description": "Studing React from Akshay Saini",
+  "main": "index.js" ===>>> is line ko hatana pdega
+)

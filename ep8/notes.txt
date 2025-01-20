@@ -1,0 +1,296 @@
+                                                part 1: Class based component
+
+Que => Definition of component ?
+Ans => Components are independent and reusable bits of code. They serve the same purpose as JavaScript functions or classes, but work in isolation and return HTML. 
+    Components come in two types: 
+        1- Class components 
+        2- Function components
+
+        - Class components: It is a older/classical way of writing the component in React, it is a class which extends React.Component and it has a render method that returns some piece of JSX.
+
+        - Function components: It is a javascript Function that returns some piece of JSX, it's a new way of writing the component in React.
+
+                                                part (1-2-3-4-5): Difference between CC & FC
+                                                
+Que => Difference between Class components & Function components ?
+Ans => Let we compare the code of Users component made by both techniques,
+    We will compare:
+        1- Syntax
+        2- Getting the props
+        3- State variables (Hooks)
+        4- Multiple state variables (Hooks)
+        5- Updating the State variables (Hooks)
+        6- Api calls (componentDidMount() vs useEffect hook )
+    
+    - By Class Component:
+
+        import React from "react";
+        class Users extends React.Component {
+
+            // we get the props using constructor
+            constructor(props) {
+                super(props);   // super props is necessary to write
+                console.log(props);
+
+                this.state {        // state is a big whole object which contains variables
+                    // State variables (Hooks)
+                    exp: 0,
+                    age: 21,
+                    userInfo: {
+                        name: "John Doe",
+                    },
+                };
+            }
+
+            componentDidMount() {
+                console.log("componentDidMount() called lastly");
+                
+                // Making an Api call 
+                const data = await fetch("https://api.github.com/users/MUKHTAR-02");
+                const json = await data.json();
+                console.log(json);
+
+                this.setState({
+                    userInfo: json,
+                });
+            }
+
+            render() {
+                const {role} = this.props;    // Destructuring on the fly
+                const {exp, age} = this.state;
+                const {name, avatar_url} = this.state.userInfo;
+
+                return (
+                    <div className="users-card">
+                        <h2>{name}</h2>
+                        <h3>{role}</h3>
+                            <h3>Experience = {exp}</h3>
+                            <button onClick={() = {
+                                this.setState({     
+                                    exp: this.state.exp + 1;
+                                })
+                            }}>Exp++</button>
+                            <h3>Age = {age}</h3>
+                            <h3></h3>
+                            <h4>m2r</h4>
+                    </div>
+                );
+            }
+        }
+        export default Users;
+
+    - By Functional Component:
+ 
+            import {useState, useEffect} from "React";
+            const Users = (props) => {  
+            const [exp, setExp] = useState(0);  
+            
+            useEffect(() => { 
+                fetchData();
+            }, []);
+
+            const fetchData = async () => {
+                const data = await fetch(
+                    "https://api.github.com/users/MUKHTAR-02"
+                )
+            }
+            const json = await data.json();
+            setExp(json?.exp);          // updated the state variables (hook)
+
+            const {name, role} = props  // Destructuring on the fly
+            
+            return (
+                <div className="users-card">
+                    <h2>{name}</h2>
+                    <h3>{role}</h3>
+                    <h3>Experience = {exp}</h3>
+                    <h3>Age = {age}</h3>
+                    <h4>m2r</h4>
+                </div>
+            );
+        }
+        export default Users;
+
+Que => Super props is necessary to write, But why ?
+Ans => By calling super(props), you ensure that the parent class (React. Component) performs its necessary initializations, allowing your component to function correctly within the React framework.
+
+                                                part 2: creating state variables (hooks)
+
+Que => What is state in class component ?
+Ans => State is a big whole object which contains variables
+
+                                                part 3: Updating the state variables (hooks)
+
+Que => How we update the state variables (hook) in class component ?
+Ans => By calling the function "setState()"
+            <button onClick={() = {
+                this.setState({     
+                    exp: this.state.exp + 1;
+                })
+            }}>Exp++</button>
+
+Que => Can we call setState() anywhere in our prog ?
+Ans => Yes, but if the variable is dependent on API call then it's required to update them in componentDidMount() only, bcoz in that method we will make the api calls and after making an API call, we can update the value.  
+
+                                                part 4: React class based component life cycle
+
+=> for detailed schematic diagram: https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/
+
+Que => Explain how the class based component is "Mounted" (loaded) on the web page ?
+Ans => In class based component when the prog was running the code line by line in About.js file,
+    -> then it will see, that there is a Users component, 
+    -> then it will starts to load that Users component and but did not freeze the call stack, it will execute all the code present inside About.js file and then,
+    -> then now time for executing Users.js file (Users component), here the instance (object) of a class is created,
+    -> then quickly the constructor is invoked automatically,
+    -> then render() is called,
+    -> then componentDidMount()         // abhi part 5 tk apn n yaha tk hi dekha
+    -> then componentDidUpdate()
+    -> then componentWillUnmount() will be called finally...
+
+=> Life Cycle of a class based component: 
+    constructor() -> render() -> componentDidMount() -> componentDidUpdate() -> componentWillUnmount()
+
+Que => What if About.js file was also a class based component instead of a Functional component, and componentDidMount() was written in both About and Users component?
+Ans => Then firstly the instance of About will be created
+    -> then constructor of About will be called 
+    -> then render() of About 
+    -> *then instance of Users component    // yaha gacchi kha jate bacche
+    -> then constructor of Users 
+    -> then render() of Users 
+    -> then componentDidMount() of Users
+    -> then componentDidMount() of About
+
+Que => What is componentDidMount() and what's the use of componentDidMount() ?
+Ans => componentDidMount() is a method used in class based component, it is used to make Api calls... 
+
+Que => Why we make Api calls inside componentDidMount() ?
+Ans => Remember in ep6: part2, we learnt this,
+        Page Loads -> Render data whatever is present -> API call -> Re-render the fetched data 
+        -> So, in order to not to freeze the UI page, we don't make the Api calls inside constructor() or render(), instead we make Api calls inside componentDidMount(), bcoz it called after render()...
+
+                                                part 5: Life cycle for Multiple childs
+
+=> If, About.js was a parent and it had two childs component (see Users.js)
+=> Life cycle: 
+                - parent constructor
+                - parent render()
+                    - first child constructor
+                    - first child render()
+                    - second child constructor
+                    - second child render()
+                    - first child componentDidMount()
+                    - second child componentDidMount()
+                - parent child componentDidMount()
+
+    -> even if the parent has more than 2 childs, then also the life cycle will be followed is in this pattern.
+
+
+                                                part 6: Making Api calls inside class based component
+
+=> First we give the default value to the state variable (it happens inside the constructor)
+    
+    constructor(props) {
+        super(props);
+        this.state = {  // state is a big whole object which contains variables
+            // State variables (Hooks)
+            exp: 0,
+            age: 21,
+            userInfo: {     // <- this is the place for default values...
+                name: "John Doe",
+            },
+        };
+    }
+
+=> Now we will make the api calls and update the values (this updation will only be done in componentDidMount(), bcoz after fetching, value updation is possible)
+    
+    async componentDidMount() {     // <- we need to write async
+        const data = await fetch("https://api.github.com/users/MUKHTAR-02");    // making API call
+        const json = await data.json();
+        console.log(json);
+
+        this.setState({     // Updating the state
+            userInfo: json,
+        });
+    }
+
+Que => What's componentDidUpdate() ?
+Ans => This method is used to update the component and will be called after the componentDidMount() bcoz after mounting the component we can update the component.
+
+Que => What's componentWillUnmount() ?
+Ans => Lastly this method will be called, when the page where it is written is unmounted (means not rendering on the UI) 
+    eg: Users page m likhi h ye method agr to jb tk Bnda us page pr h tb tk thik h, mgr jese hi bnda dusre page pr gya to ye unmounting ho jaigi Users page ki or ye method call ho jaigi.
+
+                                                part 7: Deep dive into class based Components
+
+=> ye part Akshay saini, ne uske purane bootcamp m se dala h, for those who want more deeper knowledge about class based component. Abhi tk jitna padhya vo interview k liye kafi tha or ab chuki class based component use bhi nhi hota to usne esa kiya...
+
+=> "Never Ever Compare Functional Component to React's Life Cycle" ~By Akshay Saini
+    like: People compare componentDidMount with useEffect hook, DON'T DO THAT (is that what he said)
+
+=> But what i believe is bcoz of researching on Chat-GPT, its better to compare bcoz it's related. There was a problem in class component (of writing messy code) which is solved by react developers through functional component. Here's the comparision,
+    
+    Mounting: in class component, componentDidMoun() method is called after rending the UI; the same case happens in Functional component that the useEffect() hook is called after return method (rendering method)
+
+    Updating: When we want to update the component in class based component then we use componentDidUpdate() and the updation here was done by if-else blocks by comparing, if the new state === old state, this was so messy and lengthy process; while in case of functional based component we write some value in the dependency array.
+        eg: useEffect(()=>{
+                console.log("UseEffect rendered");    
+            }, [btnName]);
+
+    Un-Mounting: there is a method componentWillUnmount() in class based component which is called when the component is unmounted; while in case of Functional based component we just write, useEffect (return () => { ... }) 
+        eg: useEffect(()=>{
+            fetchData();            // api call
+            return () => {          // this is how unmounting is done here
+                console.log("Un-Mounting the component");
+            }
+        }, []);
+
+Que => Why we need to unmount ?
+Ans => Let's understand this by an eg, 
+    Suppose, we have a setInterval function inside useEffect (for functional component) or componentDidMount/componentDidUpdate (for class component), 
+        eg: useEffect(()=>{
+            fetchData();        // api call
+            const timer = setInterval(() => {       // calling after every 1 sec
+                console.log("Set Interval (in body)");
+            }, 1000);
+            return () => {
+                console.log("Un-Mounting Body component");
+            }   
+        }, []);
+
+        -> then it will print "Set Interval (in body)" after every 1 sec, but the problem is it won't stop even if we move to another Component (not page remember, bcoz this is Single page application), and also one more bigger problem is when visiting another component and again visiting this component (where setInterval is written) then it will be called twice and then after every 1 sec two times setInterval function will be called and goes on...
+
+    => Because we created a Single page application, that's why on moving to another component the timer is not stopping and calling itself twice on again going back to that component where it was present
+
+        -> So its required to clear this mess which we have created, for that we write -
+        useEffect(()=>{
+            fetchData();        // api call
+            const timer = setInterval(() => {       // calling after every 1 sec
+                console.log("Set Interval (in body)");
+            }, 1000);
+            return () => {
+                clearInterval(timer);           // stopping the mess
+                console.log("Un-Mounting Body component");
+            }
+        }, []);
+
+        -> Now only when we visit the body component (or wherever it is written) this will start calling and when we leave that component it will stop...
+
+    => This was the code of Function component, in order to see how unmounting works in class based component (see Users.js file/component)
+
+Que => What's the Difference between setInterval() and setTimeOut() ?
+Ans => setInterval and setTimeOut are both built-in JavaScript functions used to manage timers, but they serve different purposes. 
+    -> Purpose -
+        setTimeOut: Executes a function once after a specified delay.
+        setInterval: Executes a function repeatedly at fixed time intervals.
+    -> Syntax - 
+        setTimeOut(callback, delay)
+        setInterval(callback, interval)
+    -> Number of Executions -
+    	setTimeOut: Executes only once after the delay.	
+        setInterval: Executes continuously at regular intervals until explicitly stopped.
+    -> Use Case -
+    	setTimeOut: Useful for delayed tasks, such as showing a notification after a delay.	
+        setInterval: Useful for repetitive tasks, such as updating a clock every second.
+    -> Stopping Execution -
+    	setTimeOut: Use clearTimeout(timerId) to cancel the timeout before execution.	
+        setInterval: Use clearInterval(intervalId) to stop further execution of the interval.

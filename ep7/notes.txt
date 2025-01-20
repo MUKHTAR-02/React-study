@@ -1,1 +1,143 @@
-                                            Part 1: 
+                                            Part 1: Working of useEffect hook
+Before moving to Routing, let's understand lill bit about useEffect hook working.
+useEffect hook takes two arguments:
+                    1- callback()           <- mandetory to give
+                    2- dependency array []  <- not mandetory to give
+    
+    case 1: if not given the dependency array, then every time when the component render, the useEffect hook will render (NEVER USE THIS WHILE MAKING ANY API CALL)
+    ->  useEffect(()=>{
+            console.log("UseEffect rendered");    
+        });
+
+    case 2: if given empty dependency array [], then at the initial rendering the hook will render (only once, it used widely bcoz it don't render unnecessarily, RECOMMANDED TO USE WHILE MAKING ANY API CALL)
+    ->  useEffect(()=>{
+            console.log("UseEffect rendered");    
+        }, [])
+
+    case 3: if we give something in the dependency array, then the hook will render at initial rendering and will render also whenever the dependency changes
+    ->  useEffect(()=>{
+            console.log("UseEffect rendered");    
+        }, [btnName]);
+
+                                            part 2: Do's and dont's of useState hook
+=> useState hook is a local state variable that's y, it's Always used inside the functional component block 
+=> Always use it on the top
+=> Never use useState hook inside if-else, loops, not even inside the functions (only write them in main functional component), it creates inconsistencies in the program 
+
+                                            part 3: Routing
+=> we need to install a react rounting library (npm install react-router-dom@^6.11.2)
+    Here, we used @^6.11.2 (version 6.11.2) of react-rounter-dom, bcoz version 7 was giving some error 
+
+=> import { createBrowserRouter, RouterProvider } from "react-router-dom";
+    createBrowserRouter = takes array of routes/paths,
+    RouterProvider = is a component, which is rendered by .render()
+
+=> Error page: This page occurs when user types or directed to the wrong path.
+    Eg - http://localhost:1234/xfisjd
+    So instead of seeing a page filled with red errors, we see a proper error page 404 which is created by the team of react-router-dom.
+
+=> Now we will create our own Error page
+    {
+        path: "/",
+        element: <AppLayout />,
+        errorElement: <Error />,    // error path
+    },
+
+    Also there is a error hook (useRouteError) which is given by react-router-dom,
+        - const err = useRouteError();
+        - console.log(err);   //shows the detail on the console about error which we can use to display on our  error page 
+
+                                            part 4: Fixing Header for all pages (Children Routes)
+When we were moving to different pages apart from home page then our Header component was not present 
+So in order to keep Header component intact there is a component which react-rounter-dom gives us is: <Outlet />
+
+=> const AppLayout = () => {
+    return (
+        <div className="app">
+            <Header/>
+            <Outlet />      // this will be replaces by children routes...
+        </div>
+    );
+};
+
+=> const appRouter = createBrowserRouter([
+    {
+        path: "/",                  // displaying AppLayout component with Children components
+        element: <AppLayout />,
+        children: [     // AppLayout's Children
+            {
+                path: "/",          // if the path is "/" then display Body component with Header
+                element: <Body />,
+            },
+            {
+                path: "/about",     // if the path is "/about" then display About component with Header
+                element: <About />,
+            },
+            {
+                path: "/contact",   // if the path is "/contact" then display Contact component with Header
+                element: <Contact />,
+            },
+            {
+                path: "/cart",      // if the path is "/cart" then display Cart component with Header
+                element: <Cart />,
+            },
+        ],
+        errorElement: <Error />,    // Else put Error component if no path matches
+    },
+]);
+
+=> Now i want the header to be clickable, such that when user click on the about, contact or cart nav items then he will be redirected to those pages 
+    - So, it can be done by using anchor tags 
+    => <a href="https://example.com">Website</a>
+
+Que => Is it a good way to use anchor tags inside React ?
+Ans => Clear NOOO, becoz it makes the page reload! (btw, even if we are manually routing by typing the route on the website's URL, then also the page was reloading)
+
+Que => How to mage the page routing possible without reloading ?
+Ans => Link component (given by react-router-dom)
+    Becoz of this, we made our website "A Single Page Application (SPA)"
+
+=> There are 2 types of Routing:
+    1- Server Side Routing (When pages loads from different Network call or places, this reloads the page)
+    2- Client Side Routing (When all the data/components are present inside one source (like our Application), this don't reloads the page and enables the Single Page Routing (SPA))
+
+                                            part 5: Dynamic Routing
+=> Now we want to make each retros clickable and working...
+    1- First of all we add the path of restro cards in app.js, and these cards will be different based on thier unique id's so for that we used,
+            {      
+                path: "/restaurant/:resId",     //:resId is the dynamic part, each restro has its unique key, and /restaurant/ is the url where we want to redirect after clicking on the cards
+                element: <RestaurantMenu />,    // we will make this component
+            },
+
+    2- Now goto body.js, we use Link component and here we redirect to `"/restaurant/"+ res?.info?.id` on click
+                <div className="res-container"> {
+                    restroList.map((res) => (
+                        <Link to={"/restaurant/"+ res?.info?.id} key = {res?.info?.id}>
+                            <RestaurantCard 
+                                resData = {res}
+                            />
+                        </Link>
+                    ))} 
+                </div>
+        
+        -> "/restaurant/"+ res?.info?.id 
+        here we had passed the unique key to along with "/restaurant/" to RestaurantMenu component.
+
+    3- Now we will make the RestaurantMenu component. And we will get the unique id of each restro with the help of useParam hook, this hook will always returns us an object that's why we get the value in {} braces, 
+        - const {resId} = useParams();
+        not this: const resId = useParams();
+
+* Note *: While doing the destructuring on the fly REMEMBER THIS...
+
+    => resInfo was an useState hook, which have api data, which takes some milli sec to get the data
+    const {name, cuisines, costForTwoMessage} = resInfo?.cards?.[2]?.card?.card?.info;  
+    // ERROR: TypeError: Cannot destructure property 'name' of '(intermediate value)' as it is undefined.
+
+    if(resInfo === null) {
+        return <Shimmer />;     // if data is not fetched then return Shimmer UI
+    }
+
+    // always destructure on fly after writing the null condition, or you will get the error 
+    const {name, cuisines, costForTwoMessage} = resInfo?.cards?.[2]?.card?.card?.info;
+
+=> Now all completed, almost sare cards click hone pr menu de rha, baki kuch kekde cards ese h jo error de rhe vo isliye quki swiggy n uski api value m bara bja rkhi, data kbhi arr[0] m dal rkha kabhi arr[2] mai...

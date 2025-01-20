@@ -1,0 +1,20 @@
+                                                part 1: Single Responsibility Principle
+                                        
+=> Single Responsibility Principle:  Each function, class in our program should have a single responsibility  
+
+=> Modularity: Means is to break the big whole code into different smaller modules
+    -> By this codes becomes more reuseable, maintainable and testable
+
+                                                part 2: Creating Custom Hook
+
+Que => Why do we need to create a Custom hook ?
+Ans => In order to make our code more modular and single responsibility Principle.
+
+=> Almost all of our application's components are following the Single Responsibility Principle except Body and RestaurantMenu component. Because those component has two responsibilities,
+                1- API fetching 
+                2- Displaying the data on UI
+    so we can modularise it by making a Custom hook for API fetching, (currently i am making RestaurantMenu component modular only (see RestaurantMenu.js))
+
+=> Custom hooks are placed inside the utils folder (its better to put them separately)
+
+                                                part 3: 

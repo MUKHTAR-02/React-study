@@ -40,6 +40,9 @@ Ans => Rendering data, on the UI based on the condition is known as Conditional 
                                   
                                     part 5: Working of useState hook
 => login / logout button bnaya with the help of useState() hook.
+=> useState hook is a local state variable that's y, it's Always used inside the functional component block 
+=> Always use it on the top
+=> Never use useState hook inside if-else, loops, not even inside the functions (only write them in main functional component), it creates inconsistencies in the program 
 
 Que => How the const variable is getting updated by useState's hook function 'setVariableName(newVariableName)' ?
 Ans => When we call the the setVariableName(), React re-renders that component and again the new const variable with that updated value is created, and hence the state changes on the UI...
@@ -78,5 +81,5 @@ Que => How to get rid of CORS plugin, becoz the other person might not have this
 Ans => Put these small piece of link in front of API,
        1- https://corsproxy.io/?
        2- https://proxy.cors.sh/
-       Now you don't need any CORS plugin.
+       Now you don't need any CORS plugin (Baki kabhi kabhi ye links bhi bara bjwati)
        for more info goto this website: ("https://nordicapis.com/10-free-to-use-cors-proxies/")
