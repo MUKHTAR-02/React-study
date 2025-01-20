@@ -1,22 +1,16 @@
-import { RES_URL } from "../utils/constants";
-
-                            // key = {res.id}
-                            // resName = {res.name}
-                            // cuisine = {res.cuisines}
-                            // rating = {res.avgRating}
-                            // img = {res.cloudinaryImageId}
+import { CLOUD_IMG_URL } from "../utils/constants";
 
 const RestaurantCard = (props) => {
     const {resData} = props;   // Destructuring on the fly
-    const {cloudinaryImageId, name, avgRating, cuisines } = resData?.info;
+    const {cloudinaryImageId, name, avgRating, cuisines, sla} = resData?.info;
     return (
         <div className="res-card">
-            <img className="res-logo" alt="res-logo" src={RES_URL} />
+            <img className="res-logo" alt="res-logo" src={CLOUD_IMG_URL + cloudinaryImageId} />
             
             <h3>{name}</h3>
-            <h4>{cuisines}</h4>
+            <h4>{cuisines?.join(", ")}</h4>
             <h4>{avgRating}</h4>
-            <h4>38 minutes</h4>
+            <h4>{sla.slaString}</h4>
         </div>
     );
 };

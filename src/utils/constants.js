@@ -2,7 +2,15 @@
 
 export const IMG_URL = "https://png.pngtree.com/png-vector/20220623/ourmid/pngtree-food-logo-png-image_5297921.png";
 
-export const RES_URL = "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/x7zvrb5mbg92skzncwnu";
+export const CLOUD_IMG_URL = "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/"
+
+export const RES_URL = "https://www.swiggy.com/dapi/restaurants/list/v5?lat=22.73091903725903&lng=75.92084568116466&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
+
+// export const RES_URL = "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/x7zvrb5mbg92skzncwnu";
+
+export const MENU_API = "https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=22.73091903725903&lng=75.92084568116466&restaurantId=";
+
+// export const REST_ID = "&restaurantId=198446";
 
 // export const RESLIST = ([
 //     { key: "1", resName: "Nafees Restaurant", cuisine: "Biryani, Nafees Special", rating: "4.0" },
