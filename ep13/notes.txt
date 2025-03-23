@@ -1,0 +1,141 @@
+                                        part 1: Testing importance
+
+There are so many types of testing but in this ep we gonna focus on "Developer Testing"
+    - In the Developer Testing we have following testings,
+
+
+                                        part 2: Types of testing
+=> Types of testing (Developer)
+    1- Unit Testing: Testing the React components in isolation
+    2- Integration Testing: Multiple components takes participation in this type of testing
+    3- End to End Testing (e2e Testing): Testing the whole application 
+
+    - As a Developer we are majorily concerned with first two types of testing.
+
+=> Now we are going to use various Testing libraries:
+    1- React testing library (most standart library to write test cases in react): It builds on top of DOM Testing library, It uses "Jest" (Jest is a js testing framework which works with babel)
+
+                                        part 3: Jest Introduction
+
+=> Type this to install React testing library,
+    -> npm i -D @testing-library/react
+=> Also goto jest docs `https://jestjs.io/docs/getting-started` and install jest, babel and Configure Babel into our application,
+    -> npm i -D jest
+    -> npm install --save-dev babel-jest @babel/core @babel/preset-env
+
+=> for configuration create a new file on the root level named "babel.config.js" and paste this,
+    -> module.exports = {
+            presets: [['@babel/preset-env', {targets: {node: 'current'}}]],
+       };
+
+Que => But since we are using parcel in our application which has inbuilt babel inside it, so if we add this new babel so will it conflict with parcel's babel config ?
+Ans => Yes it will, so inorder to make this new config work, we need to disable the parcel's babel config.
+    - goto parcel's docs `https://parceljs.org/docs/`
+    - search "jest" and click on "Javascript section" on the hover menu
+    - copy the code and paste into a new root level file named '.parcelrc' 
+
+Que => everything is setup, now how to run test command ? 
+Ans => Just like we write "npm run start/ npm start" to start the application, so for testing we need to write "npm run test" (goto package.json > srcipt section and see `test: jest`)
+
+=> After typing "npm run test" if the terminal says "No tests found, exiting with code 1" that means you've successfully configured your react testing library, jest, babel and parcel's babel  
+
+=> Now we are almost ready to run the test cases, just one thing left to do which is jest configuration
+    -> npx jest --init
+    -> iske bad kuch options aenge,
+        typescript - no
+        test env - jsdom (browser-like)
+        add coverage reports - yes
+        provider - babel
+        automatically clear mock calls, instances... - yes
+    -> now a new configuration file will automatically be created "jest.config.js" in the root level
+
+
+                                        part 4: Configure the jest
+
+=> If you're using Jest 28 or later, jest-environment-jsdom package now must be installed separately.
+    -> npm install --save-dev jest-environment-jsdom
+
+=> now we have all the packages with us now let us start writing the test cases. First we will start from a very basic test case and for that we will create a new file (components > sum.js), now in order to run test case we need to create a new folder components > __tests__ (we can create tests folder anywhere but we are putting inside components folder) 
+    -> Note: `__` (double underscore) is known as dunder
+
+                                        part 5: Syntax of Test function
+
+=> The function first of all takes two parameters:
+    1- Discription about the test function (String)
+    2- Callback function where we test the function and expects a result 
+    (See components > __tests__ > sum.test.js)
+
+=> Now hit command `npm run test` now the test case will run, WOHOO
+
+=> Now basic is completed, now its time for Unit Testing. We will test the contact component to see whether it is loading properly or not.
+    -> Note: Whenever testing a UI component, first you have to render (by render method imported from @testing-library/react) that component to jsdom. Then that render() takes the component which we want to render to jsdom.
+    (see __tests__ > Contact.test.js)
+
+    -> Note: Here we will first encounter an JSX error that we cannot write jsx inside test cases but if we want to write in jsx then add this library `@babel/preset-react` and after that we need to include this library inside babel config's presets section and with runtime to be automatic 
+    (see babel.config.js and Contact.test.js) 
+
+Que => Why we are adding presets of @babel/preset-react ?
+Ans => Bcoz babel is a transpiler which transpiles the jsx code into html code, similarly in case of testing our @babel/preset-react library is helping in transpiling the jsx code into html code.
+
+=> AGAAAIN one more error will come that `toBeInTheDocument is not a function` for than we need to AGAAAIN install a library `@testing-library/jest-dom` and then finally the test will run successfully.
+(see Contact.test.js > eg 1)
+
+=> Now we will test whether the button is present inside our contact us component or not,
+(see Contact.test.js > eg 2)
+
+                                        part 6: Beauty of 'Jest'
+
+=> Now if we want to test all the input boxes in the contact page then how we can test,
+    -> using 'getAllByRole' (All is used for multiple stuff)
+    (see Contact.test.js > eg 3)
+
+                                        part 7: Unit testing
+
+=> In order to group multiple test cases into a single category we use the function named "describe"
+    (see Contact.test.js)
+
+=> `test()` can be written as `it()`
+
+=> Now we will test the header file
+
+=> Testing k andr vo sari chize valid h jo react k andr ki h, bhar ki chize like Redux, routing etc error degi
+
+=> So on running the test case an error will come because of redux store (basically apn use kr rhe redux store in Header component and testing k andr jest ko nhi pta store k bare m to vo uska error dega), Inorder to solve this issue we need to provide the store to the test file also
+    (see Header.test.js)
+
+=> Now redux issue is solved and AGAAAIN one more error of routing `<Link to="/">Home</Link>` will come, to solve this we need to provide BrowserRouter to it.
+
+=> We also import `import "@testing-library/jest-dom"` to avoid ` TypeError: screen.getByRole is not a function`
+
+=>  if there are multiple button, but we want login button to test 
+    -> const loginButton = screen.getByRole("button", {name: "login"});
+
+=> Testing that on click the login button is it changing to logout or not,
+    (see Header.test.js > eg 3) 
+
+=> Iske bad akshay sainy ne restaurantCard component ko test kiya, ab quki usme props bhj rhe apn to uske liye mock data bnaya or test file m dal diya. Is type se testing ki...
+                                        
+                                        part 8: Integration testing
+
+=> Before doing Integration testing, do a necessary change in the package.json > script section
+    -> "watch-test": "jest --watch" 
+    -> Now run this command `npm run watch-test`
+    (This will now automatically run the test case for us whenever we save the file)
+
+=> In this testing we are going to test the full body component and search feature
+    (see __tests__ > BodyAndSearch.test.js)
+    Now we have to make dummy fetch function for the api 
+        global.fetch = jest.fn(() => {
+            return Promise.resolve({
+                json: () => {
+                    return Promise.resolve(MOCK_DATA);
+                },
+            }); 
+        }); 
+
+=> When testing, code that causes React state updates should be wrapped into act(...)
+    this warning is coming bcoz we are managing the state of the component and that state variable should be wrapped inside `act(...)` act ko apn async await k sath use krte.
+
+=> Iske bad akshay saini ne ek or Integration testing ka eg diya jisme usne RestaurantMenu component ko test kiya ki `add +` button ko click krne pr cart update ho rha ya nhi or iske sath Cart component bhi update ho rha ya nhi, isme quki apn ne Redux use kiya tha to testing m apn n Provider bhi use kiya or appStore pass kiya fir Cart component k liye BrowserRouter use kiya or usme dekha ki cart m food items aaye h ya nhi textId de kr or fir last m apn n "Clear Cart" btn test kiya fireEvent.click() function ki help se or getByText("Cart Seems Empty") ki help se confirm kr vaya ki cart Empty ho chuki hai...
+
+AB APN DATA SCIENCE KRENGE IN-SHA-ALLAH...

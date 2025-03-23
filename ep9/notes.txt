@@ -17,4 +17,93 @@ Ans => In order to make our code more modular and single responsibility Principl
 
 => Custom hooks are placed inside the utils folder (its better to put them separately)
 
-                                                part 3: 
+                                                part 3: Online / Offline status hook
+
+=> For this also we will create our own Custom hook (see utils > useOnlineStatus.js)
+    We have builted two features using useOnlineStatus Custom hook:
+        1- If user is offline then return <h1> tag "Seems like you are not connected to the Internet!" </h1> (see About, Body, Cart, Contact components, bcoz we want this feature in all components)
+        2- Show online/offline status on the header via green/red dot (see Header component)
+
+                                                part 4: Naming conventions 
+=> is part m akshay saini n sirf ye btaya ki always name any Custom hook by adding the prefix "use"
+    eg: useOnlineStatus
+
+=> Also if you are making any component then start naming it with first capital letter 
+    eg: Body, About, Cart
+
+                                                part 5: Lazy Loading
+
+=> in ep2 we talked about parcel, which can do so many things for us like:
+    - Dev build
+    - Tree shaking (remove unused code)
+    - Faster dev experience (by using caching)
+    - Image optimization (one of the expensive things to do in the browser)
+    - Bundling 
+    - Compressing etc (read Readme file for more info)
+
+    so It can do Bundling, which means Bundle the whole application into a single js file which can be sent to browser to be displayed onto the UI (on browser: inspect > Network > JS)
+
+Que => Where is this index.0641b553.js file present ? 
+Ans => in Dist > index.0641b553.js
+
+Que => But there are so many files present in the dist so why only index.0641b553.js is sent to browser ?
+Ans => They are Temp files,
+        dist folder -> it is a folder which is automatically generated, and created by parcel. They are like cache files, and from here the data is displayed on the browser (index.0641b553.js).
+
+Que => What if our application is very big like Swiggy, bookMyTrip etc for that also there is only one js file sent to browser, is it good ?
+Ans => Its not good, it will make the application too slow, 
+    In order to optimize this we need "Lazy Loading" which is also known as "Chunking", "Code Splitting", "Dynamic Bundling", "On Demand Loading", "Dynamic Import" etc.
+
+Que => What's Lazy Loading ?
+=> Lazy Loading: React.lazy() or lazy loading is used to dynamically import components or a part of code must get loaded when it is required.
+
+    Here are some of the benefits of using lazy loading in React:
+
+        -> Improved initial load time: Lazy loading can improve the initial load time of your application by reducing the amount of code that needs to be downloaded and parsed when the page first loads.
+
+        -> Reduced memory usage: Lazy loading can reduce the amount of memory that is used by your application by deferring the loading of resources until they are needed.
+
+        -> Improved user experience: Lazy loading can improve the user experience by making your application feel more responsive.
+
+        -> When to use lazy loading: For example, if a web page has an image that the user has to scroll down to see, you can display a placeholder and lazy load the full image only when the user arrives to its location.
+
+Que => How to use Lazy Loading in our application ?
+Ans => Suppose, we have a very large component named "grocery", which need to be Lazy Loaded. Following are the steps to use lazy loading in our application:
+
+    step 1: Create the component, Here in our case Grocery, we can also lazy load the existing components.
+    
+    step 2: add link of Grocery component in Header component
+
+    step 3: goto app.js (main file) and named import {lazy, suspense}
+
+    step 4: write the syntax of lazy in app.js (main file): 
+        -> const Component_Name = lazy(() => import("path_of_the_component"));
+            -> eg: const Grocery = lazy(() => import("./components/Grocery"));
+
+        This needs to be written above the component function,
+            eg: --- all imports ---
+            
+                const Grocery = lazy(() => import("./components/Grocery"));
+
+                const AppLayout = () => {...}       // <- component function
+
+    step 5: give the route in app.js (main file),
+            eg: {
+                    path: "/grocery",
+                    element: <Suspense fallback={<h1>Loading...</h1>}> <Grocery /> </Suspense>,
+                },
+
+        Que => What is Suspense, is it necessary to use Suspense ?
+        Ans => Suspense is a component introduced in React 16.6 which is named import from react, and Yes is is mandetory to use, otherwise react will throw an error bcoz Grocery component is a lazy loading component which takes time to be fetched and React does not wait for that time so suddenly it will throw an error. By using Suspense React will go into the "suspense" and will not throw any error.
+
+        Que => What's fallback, is it necessary to write ?
+        Ans => fallback is a placeholder, 
+        Working -> While the lazy data is being fetching so in the mean time we can show any message, Loading animation or Shimmer UI, on the UI to the end user, this is not necessary to write but this improves our user exp...  
+
+    step 6: See src > app.js file for more info...
+
+=> Now we have implemented lazy loading in our application, 
+    now goto Grocery page on browser > inspect > Network > JS 
+    here, a separate file of Grocery will be present... 
+        
+                            CONGRATS! WE HAVE MADE OUR APPLICATION SCALABLE!!!

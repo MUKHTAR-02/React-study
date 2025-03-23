@@ -1,4 +1,6 @@
 # React-study
+- for notes and assignment solutions
+- `https://github.com/Bharat2044/Namaste-React`
 
 # Things which Parcel do for us 
 - Dev build
@@ -30,3 +32,33 @@
 
 # React life cycle Diagram:
 - `https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/`
+
+# To See the Architecture img of Redux toolkit, 
+    pls visit these following links: 
+    - [file:///C:/Users/Guest%20pc/Downloads/react/img/Redux%20toolkit%20Architecture.jpeg]
+    - [file:///C:/Users/Guest%20pc/Downloads/react/img/Redux%20toolkit%20Architecture2.jpeg]
+
+# Redux Toolkit
+    - Install @reduxjs/toolkit and react-redux
+    - Build our store
+    - Connect the store to our app
+    - Slice (cartSlice)
+    - dispatch (action)
+    - Selector
+
+# Types of testing (Developer)
+ - Unit Testing: Testing the React components in isolation
+ - Integration Testing: Multiple components takes participation in this type of testing
+ - End to End Testing - e2e Testing: Testing the whole application 
+
+# Setting up Testing in our application 
+ - Installed React Testing Library
+ - Installed Jest
+ - Installed babel dependencies
+ - Configure babel 
+ - Configure parcel config file to disable parcel's babel transpilation
+ - jest configuration (npx jest --init)
+ - install jsdom library
+ - install @babel/preset-react (To make JSX work inside test cases)
+ - include @babel/preset-react inside babel config 
+ - install @testing-library/jest-dom (to get multiple functionalities(methods) in the assertion)

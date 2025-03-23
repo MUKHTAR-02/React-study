@@ -1,0 +1,109 @@
+                                            part 1: Redux is not mandetory
+
+gyan pela Akshay saini ne ki Redux ko har jgah use nhi krte, only best to use for large-scale applications.
+Iske alawa Zustand ko explore krne ko bole ye bhi state management library h, lightweight and gaining popolarity nowadays...
+
+                                            part 2: React-Redux & Redux-toolkit
+
+gyan pela Akshay saini ne ki React or Redux dono alg hai,
+we are going to cover "React-Redux & Redux-toolkit" not the older "Vanila-Redux"
+
+                                            part 3: Redux toolkit Architecture (RTK Architecture) and working
+
+=> Redux: Redux is a Javascript library which is for global state management, it behaves like context Api but it stores all states in single place called "store".  
+    - This store is further classified into slices(small partitions of store) where we put similar category of data like user related info, theme related info, cart etc.
+
+=> we are making a feature that if user click on "Add button" then that item should move into the cart
+
+=> Here with the help of Redux following the working will be done of "How to write data" 
+    - When user will click on the Add button then,
+    - that click will Dispatches an action then, 
+    - that action will calls a function(Reducer) then, 
+    - that function will modify/update the cart which is present inside the Redux Store > Cart(Slice)
+
+    -> Add button > Dispatch(Action) > Function(Reducer) > Modification/Updation of Cart(Slice)
+
+=> Now we will see "How to read the data"
+    - We will use a Selector to read the data from the store
+    - And the Selector will modify our Cart component, and hence we will see the it on UI
+
+    -> This process of Selector to read data from store and modify the component is known as "Subscribing to the store"
+
+=> To See the Architecture img of Redux toolkit, 
+    pls visit these following links: 
+    - [file:///C:/Users/Guest%20pc/Downloads/react/img/Redux%20toolkit%20Architecture.jpeg]
+    - [file:///C:/Users/Guest%20pc/Downloads/react/img/Redux%20toolkit%20Architecture2.jpeg]
+
+                                            part 4: Time to use Redux
+
+=> Following work we need to do in this part:
+    1 Install @reduxjs/toolkit and react-redux
+    2 Build our store
+    3 Connect the store to our app
+    4 Slice (cartSlice)
+    5 dispatch (action)
+    6 Selector
+
+        1- reduxjs/toolkit is r3used for building the store and react-redux is used to use that store in our react application, its like a bridge between react and redux...
+
+        2- For the store, we create a file inside utils folder named "appStore"
+            - inside this we make our store using configureStore() imported from reduxjs/toolkit
+            - and in this store we will have different slices which falls under "reducers" section
+            - visit utils > appStore for more info
+
+        3- first we will import the Provider from react-redux library
+            - Just like we wrapped the whole app inside context api, here also we will do the same 
+            <Provider store={appStore}>                                     <- Redux store
+            <UserContext.Provider value={{loggedInUser: userName}}>         <- context api
+                <div className="app">
+                    <Header/>
+                    <Outlet />
+                </div>
+            </UserContext.Provider>
+            </Provider>
+
+        4- for slices we will again make a new file(cartSlice) inside utils(we can also create a separate folder for it, it's upto us that how we want to manage our files and folders)
+            - here with the help of createSlice() given by reduxjs/toolkit, we can create the slices.
+            - now this slice will take some configurations like name, initialState, reducers etc
+                visit utils > cartSlice.js for more info 
+
+        5- we will also provide some actions to our slice like add, remove and clear items 
+
+        6- Now its time to Subscribe the store using Selector, Selector is nothing but a hook (useSelector) which comes from react-redux library, now we want to show on the ui that how many items (in numbers) are there in the cart, 
+            - first we hard code the items inside the cart (see utils > cartSlice)
+            - now we add the Selector hook and read the lenght of cart (see components > Header)
+                -> const cartItems = useSelector((store) => store.cart.items);
+                -> <li className="px-4 hover:underline"> <Link to="/cart">Cart({cartItems.length})</Link> </li>
+            - Now we want to add the items in the cart, when we click on the add button on the card, for that we will dispatch an action using a useDispatch() hook given by react-redux (see components > ItemList)
+
+=> Now we are going to make the cart component to display the items which we added from the item list and also clear cart feature.
+    - again we are gonna need "Subscribe to store" for it (see component > cart),
+
+                                            part 5, 6, 7: Interview Questions
+
+1- Make sure to Subscribe to the correct portion of the store in redux  
+    a-> const cartItems = useSelector((store) => (store.cart.items))    // Subscribe to the portion that we need
+
+    b-> const store = useSelector((store) => (store))                   // Subscribed to the whole store
+    const cartItems = store.cart.items;   
+
+    point "a" was good that we just Subscribed to the portion that we need, that means no unnecessary Subscription, while point "b" Subscribed to the whole store that means when even a small change will occur in the store then this also change the "store" variable, so its less efficient.
+
+    THATS WHY THE NAME "SELECTOR" IS SELECTOR BCOZ WE ARE SELECTING THE SPECIFIC PORTION OF THE STORE.
+
+2- Reducer vs reducers
+    - In the utils > appStore we had reducer and in utils > cartSlice we have reducers. 
+    - reducer is one whole big container that containing all the small reducers and is present inside appStore, while reducers are different functions (addItems, clearItems, removeItems) and is present inside cartSlice.
+
+3- Original State should always be immutable:
+- The older version (vanialla redux) says that you should not mutate state(changing of original state), now redux is updated and with the help of "Immer" library, Redux says you should mutate state while Immer takes care of immutability.
+    
+    =>  addItems: (state, action) => {              // reducer functions (RF)
+            state.items.push(action.payload);   // mutating/updating the state using the payload
+        },
+
+    - Immutability with immer: Redux Toolkit uses the immer library internally to handle immutability. This means you can write reducer logic that appears to directly modify the state, but immer ensures it produces a new state without mutating the original. Hindi mai- {Original state mutate nhi hoti jo original state hoti h vo as it is rehti h, bcoz of immer library: ek new state create hoti h or use mutate krti.}
+
+                                            part 5, 6, 7: Redux dev tool
+
+=> Best tool for debugging and watching the logs of redux.

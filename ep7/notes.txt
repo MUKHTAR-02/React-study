@@ -102,7 +102,7 @@ Ans => Link component (given by react-router-dom)
     2- Client Side Routing (When all the data/components are present inside one source (like our Application), this don't reloads the page and enables the Single Page Routing (SPA))
 
                                             part 5: Dynamic Routing
-=> Now we want to make each retros clickable and working...
+=> Now we want to make each restros clickable and working...
     1- First of all we add the path of restro cards in app.js, and these cards will be different based on thier unique id's so for that we used,
             {      
                 path: "/restaurant/:resId",     //:resId is the dynamic part, each restro has its unique key, and /restaurant/ is the url where we want to redirect after clicking on the cards

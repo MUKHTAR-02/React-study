@@ -1,0 +1,313 @@
+                                        part 1: Higher Order component
+
+=> Remember in JS we learnt about Higher Order Functions, which are the JS Functions that takes another JS Functions as an arguments and return those Functions from them, 
+    just same as it is, Higher Order components are those components that takes another components and returns them by some enhancements (adding new features to them)
+
+Que => What are pure Functions ?
+Ans => Higher Order Components (HOCs) are considered pure functions because they take a component as input and always return a new component with added functionality, without modifying the original component, meaning they have no side effects and always produce the same output for the same input. 
+
+    => This is Higher Order Component (see RestaurantCard.js file)
+    export const withPromotedLabel = (RestaurantCard) => {
+        return (props) => {          // it returns the Functions, which have some props (passes from body)
+            return (            // which returns some piece of enhanced JSX
+                <div>
+                    <label>Promoted</label>         // adding new feature (enhancement)
+                    <RestaurantCard {...props}/>    // sb props recieve ho gye spread operator "..." ki help se
+                </div>
+            )
+        } 
+    }
+
+    => This is body.js file
+        1. importing:
+        -> import RestaurantCard, { withPromotedLabel } from "./RestaurantCard";
+        
+        2. passing the RestaurantCard to Higher Order Component (withPromotedLabel) and whatever the result we are getting, we are storing in RestaurantCardPromoted (since it storing the component so this is also become a component):
+        -> const RestaurantCardPromoted = withPromotedLabel(<RestaurantCard />);
+
+        3. Rendering both promoted and non promoted cards
+        ->      <div className="res-container flex flex-wrap shadow-lg"> {
+                    restroList.map((res) => (
+                        <Link to={"/restaurant/"+ res?.info?.id} key = {res?.info?.id}>
+                            { 
+                            // if promoted then show enhanced card, else show normal non promoted card
+                            res.data.promoted ? <RestaurantCardPromoted resData = {res}/> : <RestaurantCard resData = {res}/>
+                            }
+                        </Link>
+                    ))} 
+                </div>
+
+                                        part 2: Building 'Accordion' in RestaurantMenu component
+
+Que => What's Accordion ?
+Ans => Collapsable section, jispr click krte hi data show ya hide ho jata h, swiggy ki website pr bhi h
+    It consist of its Header and Body (Body part is expandable/collapsable) 
+
+=> Just like swiggy we will make the Accordion in our application, firstly we were only showing the data of recommended Accordion, now we will show all the data.
+
+=> Firstly we filtered out our important data which contains Accordion category data: 
+    const categories = resInfo?.cards?.[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards?.filter((c) => (
+        c.card?.card?.["@type"] == "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory"
+    ));
+
+    yaha pr '@' aa rha tha isliye usko ractangular brackets with double qotes m dala
+    c.card?.card?.["@type"] -> Its valid 
+    c.card?.card?.@type     -> Its not valid
+
+=> Now we will map each category with RestaurantCategory (new component) and pass the props to it
+
+=> Now we will make a new component RestaurantCategory, Here there are two parts: 
+    1- Accordion Header 
+    2- Accordion Body
+
+    1- Accordion Header: Sbse pehle apn props m se 'title' le kr use UI pr show krva denge, or us title k total items ko bhi,
+
+        const RestaurantCategory = (props) => {
+        const heading = props.data.title;
+        
+        return (
+        <div className="w-6/12 m-auto my-4 p-4 bg-yellow-50 shadow-lg cursor-pointer">
+            <div className="flex justify-between">
+
+                {/* Accordion Header */}
+                <span className="font-bold text-md"> {heading} ({props.data.itemCards.length}) </span> 
+                <span> 🔽 </span>
+
+            </div> 
+
+            {/* Accordion Body */}
+            </div>
+        );
+    }
+
+    => title k total items ko ".length" ki mdad se nikal lenge
+        eg: ({props.data.itemCards.length})     // round brackets is used to show the numbers in round brackets
+
+    2- Accordion Body: Body k liye vaps ek new component lgega 'ItemList' krke
+
+Que => How to build our own Accordion collapsable and expandable ?
+Ans => By using useState()
+    eg: 
+        const [showItems, setShowItems] = useState(false);    
+        const handleClick = () => {     // function bnaya jispr click kiya to state change ho jaigi
+            setShowItems(!showItems);
+        }
+
+    return (
+        <div className="w-6/12 m-auto my-4 p-4 bg-yellow-50 shadow-lg cursor-pointer">
+            <div className="flex justify-between" onClick={handleClick}>        // yaha pr click kiya to kam hoga
+                {/* Accordion Header */}
+                <span className="font-bold text-md"> {heading} ({props.data.itemCards.length}) </span> 
+                <span> 🔽 </span>
+            </div> 
+
+            {/* Accordion Body */}
+            {showItems && items.map((item) => (<ItemList key={item?.card?.info?.id} data = {item?.card?.info}/>))}          // ye wali chiz show/hide hogi
+        </div>
+    );
+
+                                        part 3: Controlled and Uncontrolled components & Lifting the state up
+
+=> Ab apn apne Accordion m esa feature introduce kr rhe ki at a time sirf ek hi Accordion open ho jonsa apn chahe baki sare collapse ho jai automatically.
+
+=> What's controlled and uncontrolled components and Lifting the state up ?
+Ans => 1: if a child component is dependent on its parent component for a specific task to execute then its known as controlled component and vise versa.
+       2: Lifting state up in React is a technique that moves state from child components to a common parent component. This allows multiple components to share and update the same state. 
+                                    
+=> React dev tools: chrome extension download krvaya
+
+=> Now we need to make a feature in which only one Accordion can be expandable at a time only, for that we need to make a controlled component.
+    - Abhi ho esa rha tha ki <Accordion /> component k andr har ItemList apni state manage kr rhi thi items ko expand/collapse krne ki, apn ye kam <Accordion /> k parent yani <RestaurantMenu /> ko de denge, This is the eg of "Lifting the state up"...
+
+    => In RestaurantMenu component (parent component),
+        
+        const [showIndex, setShowIndex] = useState(null);
+        return (
+        <div>
+            <h1 className="font-extrabold text-2xl p-4 text-center"> {name} </h1>
+            <p className="font-bold pb-4 text-center"> {cuisines.join(", ") } - {costForTwoMessage} </p>
+            {/* Accordion */}
+            <div className="text-center">
+                {categories.map((category, index) => (
+                    // controlled component
+                    <Accordion 
+                    key={category?.card?.card?.title} 
+                    data={category?.card?.card}
+                    showItems={index === showIndex ? true : false} //if array index is matching with clicked index
+                    setShowIndex={() => setShowIndex(index)}    // setting the index value to state variable 
+                    />
+                ))}
+            </div>
+            </div>
+        );
+
+    => In Accordion component (child component)
+
+    const setIndex = props?.setShowIndex;   // sended the setShowIndex function of state variable showIndex to 
+                                            // child component
+    const handleClick = () => {
+        setIndex();                         // when clicked then set the index value
+    }
+
+    return (
+        <div className="w-6/12 m-auto my-4 p-4 bg-yellow-50 shadow-lg cursor-pointer">
+            <div onClick={handleClick} className="flex justify-between">
+                {/* Accordion Header */}
+                <span className="font-bold text-md"> {heading} ({props.data.itemCards.length}) </span> 
+                <span> 🔽 </span>
+            </div> 
+
+            {/* Accordion Body */}
+            {showItems && items.map((item) => (<ItemList key={item?.card?.info?.id} data = {item?.card?.info}/>))}
+        </div>
+    );
+
+    => Now we want a feature that on clicking the same Accordion again it should collapse, for that just update this line of RestaurantMenu component.
+
+        - Older line: setShowIndex={() => setShowIndex(index)}    // setting the index value to state variable
+        - Updated line: setShowIndex={showIndex === null ? () => setShowIndex(index) : () => setShowIndex(null)} 
+
+        But there is a BUG in this, that when we opened an Accordion suppose 1st Accordion, then if we are clicking on another Accordion then the other Accordion is not opening, just the first one is closing, and in order to open another Accordion we require to click again on it, 
+        
+        SO AB TIME MILE TO ISE UPDATE KRNA KUCH IS TRAH K, 1ST Accordion KHOLA USKE BAD DUSRE PR CLICK KIYA TO VO OPEN HO 1ST CLOSE HO OR AGR USI 1ST WALE PR VAPS CLICK KIYA TO VO CLOSE HO JAI...
+
+                                        part 4: Props drilling & Context
+
+Que => What's Props drilling ?
+Ans => Prop drilling is the process of passing data from one component to another through multiple layers of components in React. It's a common way to share data, but it can lead to code that's hard to maintain. 
+
+Que => How does prop drilling work?
+Ans =>  - A parent component passes data to a child component 
+        - The child component then passes the data to another child component 
+        - This process continues until the data reaches the component that needs it 
+
+Que => When can prop drilling be problematic? 
+Ans =>  - It can make code hard to read and understand
+        - It can make it difficult to reuse components
+        - It can lead to debugging issues
+        - It can introduce unnecessary dependencies between components
+        - It can lead to code duplication
+
+Que => How can we avoid prop drilling?
+Ans => Use state management solutions like Redux, React Query, or the context API 
+
+Que => What's Context ?
+Ans => Solution for props drilling, 
+    - React Context is a way to manage state globally. It can be used together with the useState Hook to share state between deeply nested components more easily than with useState alone. We can create multiple context.
+
+    eg: We are creating a feature in which the loggedInUser information will be displayed next to the login button. For that we will make a context file "UserContext" inside utils folder.
+   
+    - React gives us a utility function to create the context which is "createContext({ ...information... })" (see utils > UserContext) 
+        ->  const UserContext = createContext({
+                loggedInUser: "Default User",       // default data
+            });
+
+    - ise ab apn kahi bhi use kr skte, kuch is trah
+
+        - it works with a hook given by React library which is "useContext(name_of_context_file)" (see Header.js)
+        
+           const data = useContext(UserContext); 
+           return (
+            <div className="flex justify-between bg-yellow-100 shadow-lg">
+                <ul>
+                    <li className="px-4 font-bold">{data.loggedInUser}</li>     // used the context data
+                </ul>
+            </div>
+        );
+
+Que => How to access context via class based components bcoz that doesn't have the concept of hooks ?
+Ans => Yes there is a second old method for that (see Users.js)
+    - first we import UserContext 
+    - then we use it like a component
+        <UserContext.Consumer>
+            {({loggedInUser}) => <h1>{loggedInUser}</h1>}      // inside JSX there is a callback function
+        </UserContext.Consumer>
+
+=> Now we want to build the feature that if a person logs-in then the default data should be modified, also there is a que that,
+
+Que => Now i want to modify the default context data, but how ?
+Ans => By using UserContext.Provider (see app.js)
+
+    -> import UserContext from "./utils/UserContext";
+
+    const AppLayout = () => {
+        const [userName, setUserName] = useState(null);
+
+        useEffect(() => {
+        // suppose we made an API call for the user name and other info
+            data = {
+                name: "Mukhtar Khan",
+            };
+            setUserName(data.name);
+        }, []);
+
+        return (
+            <UserContext.Provider value={{loggedInUser: userName}}> // we update on the root level, if we want to 
+                                                                    // update it on the header level then we put UserContext.Provider before header only 
+            <div className="app">
+                <Header/>
+                <Outlet />
+            </div>
+            </UserContext.Provider>
+        );
+    };
+
+Que => Difference between Redux and Context ?
+Ans => Redux : 
+            1- It's a state management library 
+            2- It's an external library and not present inside React
+            3- Used for large scale applications
+
+        Context: 
+            1- A mechanism in React to share data across a component tree without explicitly passing props down through every level. 
+            2- It's an internal thing of React
+            3- Used for small applications
+
+                                            *** EXTRAS ***
+Que => Implement Lifting the state up ?
+Ans => Lifting the State Up in React (Easy Explanation)
+        Imagine you have two children, Child A and Child B, and they need to share the same toy. If each child keeps their own separate toy, they won’t be able to play together properly. Instead, you (the parent) keep the toy and let both children use it whenever needed.
+
+        In React, "lifting the state up" means moving the state from child components to their common parent so that multiple components can access and modify the same data.
+
+        Example with Functional Components
+        Let's say we have two components:
+
+        InputComponent → A text input field where the user types something.
+        DisplayComponent → Displays what the user typed.
+        If we keep the input value inside InputComponent, the DisplayComponent won’t know about it. So, we lift the state up to their parent component.
+
+        Step 1: Create Parent Component with State
+        import { useState } from "react";
+
+        function ParentComponent() {
+        const [text, setText] = useState(""); // State lifted to parent
+
+        return (
+            <div>
+            <InputComponent text={text} setText={setText} />
+            <DisplayComponent text={text} />
+            </div>
+        );
+        }
+
+        Step 2: Create InputComponent
+        This component updates the parent’s state when the user types.
+
+        function InputComponent({ text, setText }) {
+        return (
+            <input 
+            type="text" 
+            value={text} 
+            onChange={(e) => setText(e.target.value)} 
+            placeholder="Type something..."
+            />
+        );
+        }
+
+        Step 3: Create DisplayComponent
+        This component receives the text from the parent and displays it.
+
+        function DisplayComponent({ text }) {
+        return <h2>You typed: {text}</h2>;
+        }

@@ -92,9 +92,9 @@ He copied 15 Restaurant cards info and then first he hard coded everything ans s
 Que => Why providing key is imp ?
 Ans => When we have many sibling containers, then in order to uniquely indentify them, we need to provide key for each or 'em,
     => And also main reason is that when we add a new sibling (in our case RestaurantCard) then react won't be aware of where to place it, so it will re-render all the data. But if we have given ids then react knows that this ids are already present so just it needs to render new id among them.
+    ***Highly recommended***
     => Advantages:
         -> Huge optimization
-        -> Highly recommended
 
 Que => Some people take indexes of loops as a keys, Is it correct ?
 Ans => NO, Even the official documentation of react says "NO", reason behind it is when you will insert element let say at 1st position then you will be required to change all the indexes...

@@ -115,6 +115,7 @@ Que => How to put React element inside Component ?
 Ans =>
     // Define a Component
     function MyComponent() {
+        
     // Create a React element
     const myElement = <p>This is a React element!</p>;
 

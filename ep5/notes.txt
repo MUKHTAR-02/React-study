@@ -1,8 +1,8 @@
                                 Part 1: Import and Exports
 # Note: 
-1- Its not a good practice to keep all components in one file. Best practice is to make separate files for separate components. And all those components will be stored in the SRC > component folder.
+1- Its not a good practice to keep all components in one file. Best practice is to make separate files for separate components. And all those components will be stored in the SRC > components folder.
 
-2- Its not a good practice to keep the hardcoded data(img url, logo url etc) into component folder, It will goes to utils/common/config folder.
+2- Its not a good practice to keep the hardcoded data(img url, logo url etc) into component folder, It will goes to src > utils/common/config folder.
 
 # Import / Export: There are two types of Import & Export:
 -> Exports:

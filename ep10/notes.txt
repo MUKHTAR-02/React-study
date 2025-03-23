@@ -1,0 +1,88 @@
+                                            Part 1: About css components
+
+=> In this episode, Akshay Saini told about different Css components which are used in the industry, they are as follows:
+    - Material UI
+    - Chakra UI
+    - Bootstrap
+    - SaaS
+    - SCSS
+    - Tailwind wind (We will study this)
+
+                                            Part 2: Installation of Tailwind css
+
+step 1- Install Tailwind CSS
+Install tailwindcss and its peer dependencies via npm, and then run the init command to generate tailwind.config.js.
+    npm install -D tailwindcss postcss
+    npx tailwindcss init
+
+step 2 - Configure PostCSS
+Create a .postcssrc file in your project root, and enable the tailwindcss plugin.
+    {
+        "plugins": {
+            "tailwindcss": {}
+        }
+    }
+
+step 3 - Configure your template paths
+Add the paths to all of your template files in your tailwind.config.js file.
+    /** @type {import('tailwindcss').Config} */
+    module.exports = {
+    content: [
+        "./src/**/*.{html,js,ts,jsx,tsx}",
+    ],
+    theme: {
+        extend: {},
+    },
+    plugins: [],
+    }
+
+step 4 - Add the Tailwind directives to your CSS
+Create a ./src/index.css file and add the @tailwind directives for each of Tailwind’s layers.
+    @tailwind base;
+    @tailwind components;
+    @tailwind utilities;
+
+step 5 - Start your build process
+Run your build process with npx parcel src/index.html.
+    npx parcel src/index.html
+
+                                            Part 3: Start using it                         
+
+=> Just write what kind of style do you want for your element 
+    eg: - making an element flex
+        <div className="flex"> 
+            ... Header component ...
+        </div>
+
+        - giving width to an element 
+        <img className="w-32" src={IMG_URL}/>
+
+        - giving padding-right and hover "underline" effect 
+        <li className="pr-4 hover:underline"> <Link to="/">Home</Link> </li> 
+
+        - giving the specific size
+        <div className="res-card p-4 w-[250px]">        // by wrapping inside the square bracket "[]" we can give our required specific size...
+
+                                            *** Note *** 
+    => Here size measurement in tailwind css: 
+        4 unit of tailwind == 1 rem 
+            that means, w-32 == 8 rem (width)
+        and 4 px == 1 unit of tailwind
+            that means, w-1 == 4 px (width)
+
+    => Download the VS Code extension for tailwind to make the life easier,
+        - Tailwind CSS IntelliSense (sometimes this extension doesn't give the suggestions, there's a bug init, so just press 'ctrl + space' then it will again start to give the suggestions)
+
+=> Pros And Cons of Tailwind CSS:
+    - PROS: 
+        1 -> Light weight (It only import those classes which we have used in our project)
+            eg: 
+            - Suppose in our project we used [m, p, flex, border, hover] classes so Tailwind will import only these classes it will not import other than these classes like shadow, trasition etc
+            - and also if we used 4 times 'm' (margin class) then it will not import 'm' class 4 times, just import only 1 time 
+
+        2 -> Faster Development (since it is directly written inside JSX)
+        3 -> Can implement easily anything which we want (Light/dark mode, complex UIs etc)
+
+    - CONS:
+        1 -> Initial learning curve
+        2 -> Sometimes the CSS code goes too long (Horizontally) if we are adding so many designs 
